@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="34968e1c-5c9a-4654-a374-b916b4691684" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1e4XT9J5hL8qU64ucwBk63L0Wrw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="jsonparser" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser" timestamp="1593589234036">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser/0.0.1792.1120@0.0.1792.1120" timestamp="1593589234036" />
+    <state width="483" height="466" key="DebuggerActiveHint" timestamp="1593592049859">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="483" height="466" key="DebuggerActiveHint/0.0.1792.1120@0.0.1792.1120" timestamp="1593592049859" />
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom" timestamp="1593592594818">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1593592594818" />
+    <state width="1771" height="318" key="GridCell.Tab.0.center" timestamp="1593592594817">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1593592594817" />
+    <state width="1771" height="318" key="GridCell.Tab.0.left" timestamp="1593592594817">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1593592594817" />
+    <state width="1771" height="318" key="GridCell.Tab.0.right" timestamp="1593592594818">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1593592594818" />
+    <state width="1771" height="392" key="GridCell.Tab.1.bottom" timestamp="1593592337877">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="392" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1593592337877" />
+    <state width="1771" height="392" key="GridCell.Tab.1.center" timestamp="1593592337876">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="392" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1593592337876" />
+    <state width="1771" height="392" key="GridCell.Tab.1.left" timestamp="1593592337876">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="392" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1593592337876" />
+    <state width="1771" height="392" key="GridCell.Tab.1.right" timestamp="1593592337876">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="392" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1593592337876" />
+    <state x="597" y="192" width="598" height="735" key="find.popup" timestamp="1593583333682">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="597" y="192" width="598" height="735" key="find.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1593583333682" />
+  </component>
+</project>
