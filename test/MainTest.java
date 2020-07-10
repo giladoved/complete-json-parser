@@ -6,6 +6,7 @@ public class MainTest {
 
     @Test
     public void test1() {
+        String actual = "{\"name\":\"g\"}";
         assert true;
     }
 

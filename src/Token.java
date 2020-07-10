@@ -124,7 +124,7 @@ class Space extends Whitespace {
 
 
 class NumberToken extends Token {
-    private String number;
+    String number;
     public NumberToken(String number) {
         this.number = number;
     }
@@ -136,7 +136,7 @@ class NumberToken extends Token {
 }
 
 class StringToken extends Token {
-    private String string;
+    String string;
     public StringToken(String string) {
         this.string = string;
     }

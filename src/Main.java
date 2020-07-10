@@ -1,13 +1,14 @@
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) {
-        File baseDir = new File("/Users/giladoved/IdeaProjects/jsonparser/out/production/jsonparser");
+        File baseDir = new File("/Users/giladoved/dev/jsonparser/out/production/jsonparser");
 
 //        LinkedList<Token> tokens = new LinkedList<>();
 
@@ -83,13 +84,10 @@ public class Main {
             System.out.println(tokens);
 
 
-
-            ArrayList<JSO> swags = parse(tokens, 0, tokens.size()-1);
-            for (JSO jso : swags) {
-                System.out.print(jso + " ");
+            ArrayList<JSON> swags = parse(tokens, 0, tokens.size() - 1);
+            for (JSON swag : swags) {
+                System.out.print(swag + " ");
             }
-//            System.out.println("SWAG: " + swags);
-
 
 
         } catch (IOException e) {
@@ -100,41 +98,39 @@ public class Main {
         }
     }
 
-//    public static LinkedList<Token> tokens = new LinkedList<>();
+    public static int size = 0;
+    //    public static LinkedList<Token> tokens = new LinkedList<>();
     public static ArrayList<Token> tokens = new ArrayList<>();
 //    public static ArrayList<JSO> parsedTokens = new ArrayList<>();
 
-    private static ArrayList<JSO> parse(ArrayList<Token> tokens, int start, int end) throws Exception {
-        ArrayList<JSO> parsedTokens = new ArrayList<>();
+    private static ArrayList<JSON> parse(ArrayList<Token> tokens, int start, int end) throws Exception {
+        ArrayList<JSON> parsedTokens = new ArrayList<>();
         Token token = tokens.get(start);
         if (token instanceof True) {
-            parsedTokens.add(new JSO("true"));
+            size = 1;
+            parsedTokens.add(new JSONTrue());
             return parsedTokens;
         } else if (token instanceof False) {
-            parsedTokens.add(new JSO("false"));
+            size = 1;
+            parsedTokens.add(new JSONFalse());
             return parsedTokens;
         } else if (token instanceof Null) {
-            parsedTokens.add(new JSO("null"));
+            size = 1;
+            parsedTokens.add(new JSONNull());
             return parsedTokens;
         } else if (token instanceof StringToken) {
-            parsedTokens.add(new JSO("String"));
+            size = 1;
+            parsedTokens.add(new JSONString(((StringToken) token).string));
             return parsedTokens;
         } else if (token instanceof NumberToken) {
-            parsedTokens.add(new JSO("Number"));
+            size = 1;
+            parsedTokens.add(new JSONNumber(((NumberToken) token).number));
             return parsedTokens;
-        }
-
-        else if (token instanceof LeftSquareBracket && tokens.get(end) instanceof RightSquareBracket) {
-            parsedTokens.add(new JSO("["));
-            parsedTokens.addAll(parseArray(tokens, start+1, end-1));
-            parsedTokens.add(new JSO("]"));
+        } else if (token instanceof LeftSquareBracket && tokens.get(end) instanceof RightSquareBracket) {
+            parsedTokens.add(parseArray(tokens, start + 1, end - 1));
             return parsedTokens;
-        }
-
-        else if (token instanceof LeftCurlyBracket && tokens.get(end) instanceof RightCurlyBracket) {
-            parsedTokens.add(new JSO("{"));
-            parsedTokens.addAll(parseObject(tokens, start+1, end-1));
-            parsedTokens.add(new JSO("}"));
+        } else if (token instanceof LeftCurlyBracket && tokens.get(end) instanceof RightCurlyBracket) {
+            parsedTokens.add(parseObject(tokens, start + 1, end - 1));
             return parsedTokens;
         }
 
@@ -149,47 +145,104 @@ public class Main {
         return null;
     }
 
-    private static ArrayList<JSO> parseObject(ArrayList<Token> tokens, int start, int end) throws Exception {
-        ArrayList<JSO> jsoo = new ArrayList<>();
-        JSOO object = new JSOO();
-
-        while (start + 2 <= end) {
-            if (!(tokens.get(start) instanceof StringToken)) {
-                throw new Exception("NOT A STRING KEY");
-            }
-            else if (!(tokens.get(start + 1) instanceof Colon)) {
-                throw new Exception("NOT A COLON");
-            }
-            else {
-                ArrayList<JSO> jsos = parse(tokens, start+2, end);
-                object.map.put(tokens.get(start).toString(), jsos);
-                start += jsos.size();
-            }
-        }
-
-        jsoo.add(object);
-        return jsoo;
-    }
-
-    private static ArrayList<JSO> parseArray(ArrayList<Token> tokens, int start, int end) throws Exception {
-        ArrayList<JSO> array = new ArrayList<>();
+    private static JSONArray parseArray(ArrayList<Token> tokens, int start, int end) throws Exception {
+        JSONArray jsonArray = new JSONArray();
         while (start <= end) {
-            ArrayList<JSO> jsos = parse(tokens, start, end);
-            array.addAll(jsos);
-
-            if (start + jsos.size() > end) {
-                return array;
+            ArrayList<JSON> item = parse(tokens, start, end);
+            if (item != null) {
+                jsonArray.addAll(item);
             }
 
-            if (!(tokens.get(start + jsos.size()) instanceof Comma)) {
-                throw new Exception("COMMA EXCEPTION");
+            if (start + size >= end) {
+                if (tokens.get(start + size) instanceof Comma) {
+                    throw new Exception("Trailing comma bro");
+                } else {
+                    size = jsonArray.array.size() + 2;
+                    return jsonArray;
+                }
             }
-            else {
-                start += jsos.size() + 1;
+
+            Token afterItem = tokens.get(start + size);
+            if (!(afterItem instanceof Comma)) {
+                throw new Exception("Put one comma between items in array");
             }
+
+            start += size + 1;
         }
-        return array;
+
+        size = jsonArray.array.size() + 2;
+        return jsonArray;
     }
+
+    private static JSONObject parseObject(ArrayList<Token> tokens, int start, int end) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+
+        return jsonObject;
+    }
+
+
+
+//    private static JSONObject parseObject(ArrayList<Token> tokens, int start, int end) throws Exception {
+//        JSONObject jsonObject = new JSONObject();
+//        int s = start;
+//
+//        while (start + 2 <= end) {
+//            if (!(tokens.get(start) instanceof StringToken)) {
+//                throw new Exception("NOT A STRING KEY");
+//            } else if (!(tokens.get(start + 1) instanceof Colon)) {
+//                throw new Exception("NOT A COLON");
+//            } else {
+//                ArrayList<JSON> jsos = parse(tokens, start + 2, end);
+//                jsonObject.put(tokens.get(start).toString(), jsos);
+//
+//                if (start + 2 + size >= end) {
+//                    if ((tokens.get(start + 2 + size) instanceof Comma)) {
+//                        throw new Exception("Trailing comma bro");
+//                    }
+//
+//                    size = end - start;
+//                    return jsonObject;
+//                } else if (!(tokens.get(start + 2 + size) instanceof Comma)) {
+//                    throw new Exception("Comma exception");
+//                } else {
+//                    start += size + 3;
+//                }
+//            }
+//        }
+//
+//        size = start - s;
+//        return jsonObject;
+//    }
+
+//    private static JSONArray parseArray(ArrayList<Token> tokens, int start, int end) throws Exception {
+//        JSONArray jsonArray = new JSONArray();
+//        int s = start;
+//
+//        while (start <= end) {
+//            ArrayList<JSON> jsos = parse(tokens, start, end);
+//            if (jsos != null) {
+//                jsonArray.addAll(jsos);
+//            }
+//
+//            if (start + size > end) {
+//                if (start == end) {
+//                    size = end - start;
+//                    return jsonArray;
+//                }
+//                else if (!(tokens.get(start + size) instanceof Comma)) {
+//                    throw new Exception("Trailing Comma bro");
+//                }
+//            }
+//            else if (!(tokens.get(start + size) instanceof Comma)) {
+//                throw new Exception("Need one comma between items");
+//            } else {
+//                start += size + 1;
+//            }
+//        }
+//
+//        size = start - s;
+//        return jsonArray;
+//    }
 
 //    private static boolean isValid(LinkedList<Token> tokens) {
 //        Token token = tokens.pop();
@@ -254,23 +307,87 @@ public class Main {
 //    }
 }
 
-class JSO {
-    String str = null;
-    public JSO(String str) {
-        this.str = str;
+
+class JSON {
+
+}
+
+class JSONString extends JSON {
+    String string;
+
+    public JSONString(String str) {
+        this.string = str;
     }
 
     @Override
     public String toString() {
-        return str;
+        return string;
     }
 }
 
-class JSOO extends JSO {
+class JSONNumber extends JSON {
+    int number;
+
+    public JSONNumber(String numStr) {
+        this.number = Integer.parseInt(numStr);
+    }
+
+    @Override
+    public String toString() {
+        return number + "";
+    }
+}
+
+class JSONTrue extends JSON {
+    @Override
+    public String toString() {
+        return "true";
+    }
+}
+
+class JSONFalse extends JSON {
+    @Override
+    public String toString() {
+        return "false";
+    }
+}
+
+class JSONNull extends JSON {
+    @Override
+    public String toString() {
+        return "null";
+    }
+}
+
+class JSONArray extends JSON {
+    ArrayList<Object> array;
+
+    public JSONArray() {
+        array = new ArrayList<>();
+    }
+
+    public void addAll(ArrayList<JSON> items) {
+        array.addAll(items);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.size(); i++) {
+            sb.append(array.get(i));
+            if (i != array.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
+
+class JSONObject extends JSON {
     HashMap<String, Object> map;
 
-    public JSOO() {
-        super(null);
+    public JSONObject() {
         map = new HashMap<>();
     }
 
@@ -287,7 +404,10 @@ class JSOO extends JSO {
         StringBuilder sb = new StringBuilder();
         sb.append('\n');
         for (String key : map.keySet()) {
-            sb.append(key + ": " + map.get(key) + '\n');
+            sb.append(key)
+                    .append(": ")
+                    .append(map.get(key))
+                    .append('\n');
         }
         return sb.toString();
     }
