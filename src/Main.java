@@ -1,9 +1,6 @@
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
@@ -16,10 +13,13 @@ public class Main {
             System.out.println(tokens);
 
             JsonParser parser = new JsonParser(tokens);
-            ArrayList<JSON> swags = parser.parse();
-            for (JSON swag : swags) {
-                System.out.print(swag + " ");
+            Object result = parser.parse();
+            if (result instanceof JSONObject) {
+                System.out.println("object:");
+            } else if (result instanceof JSONArray) {
+                System.out.println("array:");
             }
+            System.out.println(result);
         } catch (IOException e) {
             System.out.println("ERROR FINDING FILE: " + e.getLocalizedMessage());
         } catch (Exception e) {

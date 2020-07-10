@@ -2,95 +2,104 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public abstract class JSON {
-}
+//public abstract class JSON {
+//}
+//
+//class JSONString extends JSON {
+//    String string;
+//
+//    public JSONString(String str) {
+//        this.string = str;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return string;
+//    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        JSONString that = (JSONString) o;
+//        return Objects.equals(string, that.string);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(string);
+//    }
+//}
+//
+//class JSONNumber extends JSON {
+//    int number;
+//
+//    public JSONNumber(String numStr) {
+//        this.number = Integer.parseInt(numStr);
+//    }
+//
+//    public JSONNumber(int num) {
+//        this.number = num;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return number + "";
+//    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        JSONNumber that = (JSONNumber) o;
+//        return number == that.number;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(number);
+//    }
+//}
+//
+//class JSONTrue extends JSON {
+//    @Override
+//    public String toString() {
+//        return "true";
+//    }
+//}
+//
+//class JSONFalse extends JSON {
+//    @Override
+//    public String toString() {
+//        return "false";
+//    }
+//}
+//
+//class JSONNull extends JSON {
+//    @Override
+//    public String toString() {
+//        return "null";
+//    }
+//}
+//
 
-class JSONString extends JSON {
-    String string;
-
-    public JSONString(String str) {
-        this.string = str;
-    }
-
-    @Override
-    public String toString() {
-        return string;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JSONString that = (JSONString) o;
-        return Objects.equals(string, that.string);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(string);
-    }
-}
-
-class JSONNumber extends JSON {
-    int number;
-
-    public JSONNumber(String numStr) {
-        this.number = Integer.parseInt(numStr);
-    }
-
-    public JSONNumber(int num) {
-        this.number = num;
-    }
-
-    @Override
-    public String toString() {
-        return number + "";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JSONNumber that = (JSONNumber) o;
-        return number == that.number;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(number);
-    }
-}
-
-class JSONTrue extends JSON {
-    @Override
-    public String toString() {
-        return "true";
-    }
-}
-
-class JSONFalse extends JSON {
-    @Override
-    public String toString() {
-        return "false";
-    }
-}
-
-class JSONNull extends JSON {
-    @Override
-    public String toString() {
-        return "null";
-    }
-}
-
-class JSONArray extends JSON {
+class JSONArray {
     ArrayList<Object> array;
 
     public JSONArray() {
         array = new ArrayList<>();
     }
 
-    public void addAll(ArrayList<JSON> items) {
-        array.addAll(items);
+    public JSONArray(ArrayList<Object> array) {
+        this.array = array;
+    }
+
+    public void add(Object item) {
+        array.add(item);
+    }
+
+    public int size() {
+        return array.size();
     }
 
     @Override
@@ -120,11 +129,19 @@ class JSONArray extends JSON {
     }
 }
 
-class JSONObject extends JSON {
+class JSONObject {
     HashMap<String, Object> map;
 
     public JSONObject() {
         map = new HashMap<>();
+    }
+
+    public JSONObject(HashMap<String, Object> map) {
+        this.map = map;
+    }
+
+    public int size() {
+        return map.keySet().size();
     }
 
     public void put(String key, Object val) throws Exception {

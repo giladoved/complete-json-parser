@@ -44,7 +44,7 @@ public class JsonLexer {
                         tokens.add(new NumberToken(subline.substring(numberMatcher.start(), numberMatcher.end())));
                         index += numberMatcher.end();
                     } else if (stringMatcher.find() && stringMatcher.start() == 0) {
-                        tokens.add(new StringToken(subline.substring(stringMatcher.start(), stringMatcher.end())));
+                        tokens.add(new StringToken(subline.substring(stringMatcher.start() + 1, stringMatcher.end() - 1)));
                         index += stringMatcher.end();
                     } else if (currentChar == Colon.unicode) {
                         tokens.add(new Colon());
