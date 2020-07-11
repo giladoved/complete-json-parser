@@ -80,6 +80,11 @@ class Null extends Token {
     public String toString() {
         return "NULL";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Null;
+    }
 }
 
 class Whitespace extends Token {
@@ -137,6 +142,11 @@ class NumberToken extends Token {
 
 class StringToken extends Token {
     String string;
+
+    public StringToken() {
+        string = "";
+    }
+
     public StringToken(String string) {
         this.string = string;
     }

@@ -144,11 +144,7 @@ class JSONObject {
         return map.keySet().size();
     }
 
-    public void put(String key, Object val) throws Exception {
-        if (map.containsKey(key)) {
-            throw new Exception("Duplicate key error");
-        }
-
+    public void put(String key, Object val) {
         map.put(key, val);
     }
 

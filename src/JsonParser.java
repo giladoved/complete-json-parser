@@ -1,135 +1,101 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class JsonParser {
-    private final ArrayList<Token> tokens;
-    private int size = 0;
+    private final LinkedList<Token> tokens;
 
-    public JsonParser(ArrayList<Token> tokens) {
+    public JsonParser(LinkedList<Token> tokens) {
         this.tokens = tokens;
     }
 
     public Object parse() throws Exception {
-        return parse(0);
-    }
+        if (tokens.size() == 0) {
+            return "";
+        }
 
-    private Object parse(int start) throws Exception {
-        Token token = tokens.get(start);
+        Token token = tokens.pop();
         if (token instanceof True) {
-            size = 1;
             return true;
         } else if (token instanceof False) {
-            size = 1;
             return false;
         } else if (token instanceof Null) {
-            size = 1;
             return new Null();
         } else if (token instanceof StringToken) {
-            size = 1;
             return ((StringToken) token).string;
         } else if (token instanceof NumberToken) {
-            size = 1;
             String number = ((NumberToken) token).number;
-            return Integer.parseInt(number);
+            try {
+                return Integer.parseInt(number);
+            } catch (NumberFormatException e) {
+            }
+
+            try {
+                return Double.parseDouble(number);
+            } catch (NumberFormatException e) {
+            }
+
+            throw new Exception("Invalid number");
         } else if (token instanceof LeftSquareBracket) {
-            return parseArray(start + 1);
+            return parseArray();
         } else if (token instanceof LeftCurlyBracket) {
-            return parseObject(start + 1);
+            return parseObject();
         }
 
         return null;
     }
 
-    private JSONObject parseObject(int start) throws Exception {
+    private JSONObject parseObject() throws Exception {
         JSONObject jsonObject = new JSONObject();
-        int end = indexOf(start, false) - 1;
-        if (end < 0) throw new Exception(", or } expected");
-        int localSize = 2;
 
-        while (start <= end) {
-            Token keyToken = tokens.get(start);
+        while (true) {
+            Token keyToken = tokens.pop();
+            if (keyToken instanceof RightCurlyBracket) {
+                return jsonObject;
+            }
             if (!(keyToken instanceof StringToken)) {
                 throw new Exception("String key expected");
             }
 
-            Token colonToken = tokens.get(start + 1);
+            Token colonToken = tokens.pop();
             if (!(colonToken instanceof Colon)) {
                 throw new Exception("Colon expected");
             }
 
-            Object parsed = parse(start + 2);
+            Object parsed = parse();
             if (parsed == null) {
                 throw new Exception("Invalid token");
             }
             jsonObject.put(((StringToken) keyToken).string, parsed);
-            localSize += size + 2;
 
-            if (start + size + 2 >= end) {
-                if (tokens.get(start + size + 2) instanceof Comma) {
-                    throw new Exception("Trailing comma bro");
-                } else {
-                    size = localSize;
-                    return jsonObject;
-                }
+            Token afterItem = tokens.pop();
+            if (afterItem instanceof RightCurlyBracket) {
+                return jsonObject;
+            } else if (!(afterItem instanceof Comma)) {
+                throw new Exception("Comma error");
             }
-
-            Token afterItem = tokens.get(start + size + 2);
-            if (!(afterItem instanceof Comma)) {
-                throw new Exception("Put one comma between items");
-            }
-
-            start += size + 3;
         }
-
-        size = localSize;
-        return jsonObject;
     }
 
-    private JSONArray parseArray(int start) throws Exception {
+    private JSONArray parseArray() throws Exception {
         JSONArray jsonArray = new JSONArray();
-        int end = indexOf(start, true) - 1;
-        if (end < 0) throw new Exception(", or ] expected");
-        while (start <= end) {
-            Object parsed = parse(start);
+
+        while (true) {
+            if (tokens.peek() instanceof RightSquareBracket) {
+                tokens.pop();
+                return jsonArray;
+            }
+
+            Object parsed = parse();
             if (parsed == null) {
                 throw new Exception("Invalid token");
             }
             jsonArray.add(parsed);
 
-            if (start + size >= end) {
-                if (tokens.get(start + size) instanceof Comma) {
-                    throw new Exception("Trailing comma bro");
-                } else {
-                    size = jsonArray.array.size() + 2;
-                    return jsonArray;
-                }
-            }
-
-            Token afterItem = tokens.get(start + size);
-            if (!(afterItem instanceof Comma)) {
-                throw new Exception("Put one comma between items in array");
-            }
-
-            start += size + 1;
-        }
-
-        size = jsonArray.array.size() + 2;
-        return jsonArray;
-    }
-
-    private int indexOf(int start, boolean isArray) {
-        for (int i = start; i < tokens.size(); i++) {
-            if (tokens.get(i) != null) {
-                if (isArray) {
-                    if (tokens.get(i) instanceof RightSquareBracket) {
-                        return i;
-                    }
-                } else {
-                    if (tokens.get(i) instanceof RightCurlyBracket) {
-                        return i;
-                    }
-                }
+            Token afterItem = tokens.pop();
+            if (afterItem instanceof RightSquareBracket) {
+                return jsonArray;
+            } else if (!(afterItem instanceof Comma)) {
+                throw new Exception("Comma error");
             }
         }
-        return -1;
     }
 }

@@ -27,7 +27,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -42,10 +42,11 @@
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.MainTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="jsonparser" />
@@ -69,31 +70,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.ArrayOfObject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.String10FFFE" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jsonparser" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="ArrayOfObject" />
+      <option name="METHOD_NAME" value="String10FFFE" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.ArrayOfObjectWithArray" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.String1FFFE" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jsonparser" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="ArrayOfObjectWithArray" />
+      <option name="METHOD_NAME" value="String1FFFE" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.ArrayOfObjects" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.StringZeroWidthSpace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jsonparser" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="ArrayOfObjects" />
+      <option name="METHOD_NAME" value="StringZeroWidthSpace" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -101,67 +102,75 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.MainTest" />
-        <item itemvalue="JUnit.MainTest.ArrayOfObjects" />
-        <item itemvalue="JUnit.MainTest.ArrayOfObjectWithArray" />
-        <item itemvalue="JUnit.MainTest.ArrayOfObject" />
+        <item itemvalue="JUnit.MainTest.String1FFFE" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.MainTest.StringZeroWidthSpace" />
+        <item itemvalue="JUnit.MainTest.String10FFFE" />
       </list>
     </recent_temporary>
   </component>
   <component name="WindowStateProjectService">
-    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser" timestamp="1594338487153">
+    <state x="100" y="100" width="1592" height="920" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1594495752772">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser/0.0.1792.1120@0.0.1792.1120" timestamp="1594338487153" />
-    <state width="483" height="466" key="DebuggerActiveHint" timestamp="1594365966061">
+    <state x="100" y="100" width="1592" height="920" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1594495752772" />
+    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser" timestamp="1594496101160">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="483" height="466" key="DebuggerActiveHint/0.0.1792.1120@0.0.1792.1120" timestamp="1594365966061" />
-    <state width="1771" height="318" key="GridCell.Tab.0.bottom" timestamp="1594369710776">
+    <state x="709" y="273" key="#com.intellij.ide.util.MemberChooser/0.0.1792.1120@0.0.1792.1120" timestamp="1594496101160" />
+    <state width="483" height="466" key="DebuggerActiveHint" timestamp="1594503337220">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1594369710776" />
-    <state width="1771" height="392" key="GridCell.Tab.0.bottom/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543302" />
-    <state width="1771" height="318" key="GridCell.Tab.0.center" timestamp="1594369710775">
+    <state width="483" height="466" key="DebuggerActiveHint/0.0.1792.1120@0.0.1792.1120" timestamp="1594503337220" />
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom" timestamp="1594509838874">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1594369710775" />
-    <state width="1771" height="392" key="GridCell.Tab.0.center/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543301" />
-    <state width="1771" height="318" key="GridCell.Tab.0.left" timestamp="1594369710774">
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1594509838874" />
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.23.1792.1060@0.23.1792.1060" timestamp="1594507846720" />
+    <state width="1771" height="318" key="GridCell.Tab.0.center" timestamp="1594509838873">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1594369710774" />
-    <state width="1771" height="392" key="GridCell.Tab.0.left/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543301" />
-    <state width="1771" height="318" key="GridCell.Tab.0.right" timestamp="1594369710775">
+    <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1594509838873" />
+    <state width="1771" height="318" key="GridCell.Tab.0.center/0.23.1792.1060@0.23.1792.1060" timestamp="1594507846719" />
+    <state width="1771" height="318" key="GridCell.Tab.0.left" timestamp="1594509838873">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1594369710775" />
-    <state width="1771" height="392" key="GridCell.Tab.0.right/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543301" />
-    <state width="1771" height="392" key="GridCell.Tab.1.bottom" timestamp="1594369617490">
+    <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1594509838873" />
+    <state width="1771" height="318" key="GridCell.Tab.0.left/0.23.1792.1060@0.23.1792.1060" timestamp="1594507846718" />
+    <state width="1771" height="318" key="GridCell.Tab.0.right" timestamp="1594509838873">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="392" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1594369617490" />
-    <state width="1771" height="392" key="GridCell.Tab.1.bottom/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543436" />
-    <state width="1771" height="392" key="GridCell.Tab.1.center" timestamp="1594369617490">
+    <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1594509838873" />
+    <state width="1771" height="318" key="GridCell.Tab.0.right/0.23.1792.1060@0.23.1792.1060" timestamp="1594507846719" />
+    <state width="1771" height="472" key="GridCell.Tab.1.bottom" timestamp="1594509832203">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="392" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1594369617490" />
-    <state width="1771" height="392" key="GridCell.Tab.1.center/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543436" />
-    <state width="1771" height="392" key="GridCell.Tab.1.left" timestamp="1594369617489">
+    <state width="1771" height="472" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1594509832203" />
+    <state width="1771" height="472" key="GridCell.Tab.1.bottom/0.23.1792.1060@0.23.1792.1060" timestamp="1594504773333" />
+    <state width="1771" height="472" key="GridCell.Tab.1.center" timestamp="1594509832202">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="392" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1594369617489" />
-    <state width="1771" height="392" key="GridCell.Tab.1.left/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543435" />
-    <state width="1771" height="392" key="GridCell.Tab.1.right" timestamp="1594369617490">
+    <state width="1771" height="472" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1594509832202" />
+    <state width="1771" height="472" key="GridCell.Tab.1.center/0.23.1792.1060@0.23.1792.1060" timestamp="1594504773332" />
+    <state width="1771" height="472" key="GridCell.Tab.1.left" timestamp="1594509832202">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="392" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1594369617490" />
-    <state width="1771" height="392" key="GridCell.Tab.1.right/0.23.1792.1060@0.23.1792.1060" timestamp="1594369543436" />
+    <state width="1771" height="472" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1594509832202" />
+    <state width="1771" height="472" key="GridCell.Tab.1.left/0.23.1792.1060@0.23.1792.1060" timestamp="1594504773332" />
+    <state width="1771" height="472" key="GridCell.Tab.1.right" timestamp="1594509832203">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1771" height="472" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1594509832203" />
+    <state width="1771" height="472" key="GridCell.Tab.1.right/0.23.1792.1060@0.23.1792.1060" timestamp="1594504773333" />
     <state x="397" y="199" key="SettingsEditor" timestamp="1594329630574">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="397" y="199" key="SettingsEditor/0.0.1792.1120@0.0.1792.1120" timestamp="1594329630574" />
+    <state width="896" height="560" key="XDebugger.FullValuePopup" timestamp="1594505893362">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="896" height="560" key="XDebugger.FullValuePopup/0.0.1792.1120@0.0.1792.1120" timestamp="1594505893362" />
     <state x="593" y="459" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1594329308292">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
@@ -174,13 +183,13 @@
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="634" y="315" key="extract.method.dialog/0.0.1792.1120@0.0.1792.1120" timestamp="1594358024859" />
-    <state x="597" y="192" width="598" height="735" key="find.popup" timestamp="1594364551857">
+    <state x="597" y="192" width="598" height="735" key="find.popup" timestamp="1594483417460">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="597" y="192" width="598" height="735" key="find.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1594364551857" />
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1594364591836">
+    <state x="597" y="192" width="598" height="735" key="find.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1594483417460" />
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1594484129448">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1594364591836" />
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1594484129448" />
   </component>
 </project>

@@ -1,12 +1,13 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JsonLexer {
 
-    //    ^\"([^\"\\\p{Cntrl}])\"
-    private final Pattern stringPattern = Pattern.compile("\\\"[^\\\"\\\\]*\\\"");
+    //    \"([^\"\\\p{Cntrl}]|\\.)*\"
+    private final Pattern stringPattern = Pattern.compile("\\\"([^\\\"\\\\\\p{Cntrl}]|\\\\.)*\\\"");
 
     //  -?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?
     private final Pattern numberPattern = Pattern.compile("-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?\\d+)?");
@@ -17,8 +18,8 @@ public class JsonLexer {
         this.filename = filename;
     }
 
-    public ArrayList<Token> extractTokens() throws IOException {
-        ArrayList<Token> tokens = new ArrayList<>();
+    public LinkedList<Token> extractTokens() throws Exception {
+        LinkedList<Token> tokens = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename))))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -44,8 +45,17 @@ public class JsonLexer {
                         tokens.add(new NumberToken(subline.substring(numberMatcher.start(), numberMatcher.end())));
                         index += numberMatcher.end();
                     } else if (stringMatcher.find() && stringMatcher.start() == 0) {
-                        tokens.add(new StringToken(subline.substring(stringMatcher.start() + 1, stringMatcher.end() - 1)));
-                        index += stringMatcher.end();
+                        String val = subline.substring(stringMatcher.start() + 1, stringMatcher.end() - 1);
+                        if (val.length() == 0) {
+                            tokens.add(new StringToken());
+                            index += stringMatcher.end();
+                        } else if (hasValidEscapes(val)) {
+                            String string = convertToEscapedChars(val);
+                            tokens.add(new StringToken(string));
+                            index += stringMatcher.end();
+                        } else {
+                            throw new Exception("Illegal string");
+                        }
                     } else if (currentChar == Colon.unicode) {
                         tokens.add(new Colon());
                         index++;
@@ -83,5 +93,81 @@ public class JsonLexer {
             }
             return tokens;
         }
+    }
+
+    private String convertToEscapedChars(String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            char c1 = str.charAt(i);
+            char c2 = ' ';
+            if (i + 1 < str.length()) {
+                c2 = str.charAt(i + 1);
+            }
+            if (c1 == '\\') {
+                if (c2 == '\"') {
+                    sb.append("\"");
+                    i++;
+                } else if (c2 == '\\') {
+                    sb.append("\\");
+                    i++;
+                } else if (c2 == '/') {
+                    sb.append("/");
+                    i++;
+                } else if (c2 == 'b') {
+                    sb.append('\u0008');
+                    i++;
+                } else if (c2 == 'f') {
+                    sb.append('\u000C');
+                    i++;
+                } else if (c2 == 'n') {
+                    sb.append('\n');
+                    i++;
+                } else if (c2 == 'r') {
+                    sb.append('\r');
+                    i++;
+                } else if (c2 == 't') {
+                    sb.append('\t');
+                    i++;
+                } else if (c2 == 'u') {
+                    String hex = str.substring(i + 2, i + 6);
+                    sb.append((char) Integer.parseInt(hex, 16));
+                    i += 5;
+                }
+            } else {
+                sb.append(c1);
+            }
+        }
+        return sb.toString();
+    }
+
+    private boolean hasValidEscapes(String str) {
+        char c1 = 0, c2;
+        for (int i = 0; i < str.length() - 1; i++) {
+            c1 = str.charAt(i);
+            c2 = str.charAt(i+1);
+            if (c1 == '\\') {
+                if (c2 == '\\') {
+                    i++;
+                }
+                else if (c2 == '\"' || c2 == '/' || c2 == 'b' || c2 == 'f' || c2 == 'n' || c2 == 'r' || c2 == 't') {
+
+                } else if (c2 == 'u') {
+                    if (i + 6 > str.length()) return false;
+
+                    if (!is4Hex(str.substring(i + 2, i + 6))) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (c1 != '\\' && str.charAt(str.length() - 1) == '\\') return false;
+
+        return true;
+    }
+
+    private boolean is4Hex(String str) {
+        return str.matches("[0-9A-Fa-f]{4}");
     }
 }
