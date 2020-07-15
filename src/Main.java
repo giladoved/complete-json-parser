@@ -9,7 +9,7 @@ public class Main {
         File baseDir = new File("/Users/giladoved/dev/jsonparser/out/production/jsonparser");
 
         String expected =
-                "[\"\\uD83F\\uDFFE\"]";
+                "[\"\\uD801\\udc37\"]\n";
         org.json.JSONArray res = new org.json.JSONArray(expected);
         System.out.println("~~");
         Object swag = res.get(0);

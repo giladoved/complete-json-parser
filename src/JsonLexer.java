@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 public class JsonLexer {
 
     //    \"([^\"\\\p{Cntrl}]|\\.)*\"
-    private final Pattern stringPattern = Pattern.compile("\\\"([^\\\"\\\\\\p{Cntrl}]|\\\\.)*\\\"");
+    //    \"([^\"\\]|\\.)*\"
+    private final Pattern stringPattern = Pattern.compile("\\\"([^\\\"\\\\]|\\\\.)*\\\"");
 
     //  -?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?
     private final Pattern numberPattern = Pattern.compile("-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?\\d+)?");
@@ -18,7 +19,7 @@ public class JsonLexer {
         this.filename = filename;
     }
 
-    public LinkedList<Token> extractTokens() throws Exception {
+    public LinkedList<Token> extractTokens() throws IOException, ParserException {
         LinkedList<Token> tokens = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename))))) {
             String line;
@@ -31,7 +32,6 @@ public class JsonLexer {
                     Matcher numberMatcher = numberPattern.matcher(subline);
 
                     char currentChar = subline.charAt(0);
-
                     if (subline.contains(new String(True.unicode)) && subline.length() >= True.unicode.length && subline.substring(0, True.unicode.length).equals(new String(True.unicode))) {
                         tokens.add(new True());
                         index += True.unicode.length;
@@ -49,12 +49,14 @@ public class JsonLexer {
                         if (val.length() == 0) {
                             tokens.add(new StringToken());
                             index += stringMatcher.end();
+                        } else if (!isValidUnicode(val)) {
+                            throw new ParserException("Illegal unicode");
                         } else if (hasValidEscapes(val)) {
                             String string = convertToEscapedChars(val);
                             tokens.add(new StringToken(string));
                             index += stringMatcher.end();
                         } else {
-                            throw new Exception("Illegal string");
+                            throw new ParserException("Illegal string");
                         }
                     } else if (currentChar == Colon.unicode) {
                         tokens.add(new Colon());
@@ -87,12 +89,20 @@ public class JsonLexer {
 //                        tokens.add(new Space());
                         index++;
                     } else {
-                        index++;
+                        throw new ParserException("Illegal token");
                     }
                 }
             }
+
+            if (tokens.size() == 0) {
+                throw new ParserException("Empty File");
+            }
             return tokens;
         }
+    }
+
+    private boolean isValidUnicode(String str) {
+        return new String(StandardCharsets.UTF_8.encode(str).array(), StandardCharsets.UTF_8).trim().equals(str.trim());
     }
 
     private String convertToEscapedChars(String str) {
@@ -144,12 +154,11 @@ public class JsonLexer {
         char c1 = 0, c2;
         for (int i = 0; i < str.length() - 1; i++) {
             c1 = str.charAt(i);
-            c2 = str.charAt(i+1);
+            c2 = str.charAt(i + 1);
             if (c1 == '\\') {
                 if (c2 == '\\') {
                     i++;
-                }
-                else if (c2 == '\"' || c2 == '/' || c2 == 'b' || c2 == 'f' || c2 == 'n' || c2 == 'r' || c2 == 't') {
+                } else if (c2 == '\"' || c2 == '/' || c2 == 'b' || c2 == 'f' || c2 == 'n' || c2 == 'r' || c2 == 't') {
 
                 } else if (c2 == 'u') {
                     if (i + 6 > str.length()) return false;

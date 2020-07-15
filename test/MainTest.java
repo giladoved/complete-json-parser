@@ -2,6 +2,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,7 +161,317 @@ public class MainTest {
 
 
 
+    @Test(expected = ParserException.class)
+    public void ArrayItemsWithoutComma() throws Exception {
+        String input = "[1 true]";
+        parse(input);
+    }
 
+    @Test(expected = ParserException.class)
+    public void ArrayInvalidUnicode() throws Exception {
+//        String invalidChar = new String(new byte[]{(byte) 0xC0, (byte) 0x80});
+//        String input = "\"" + invalidChar + "\"";
+        String input = "[�]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayColonNotComma() throws Exception {
+        String input = "[\"\": 1]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayCommaAfterClose() throws Exception {
+        String input = "[\"\"],";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayCommaAndNumber() throws Exception {
+        String input = "[,1]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayDoubleComma() throws Exception {
+        String input = "[1,,2]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayDoubleExtraComma() throws Exception {
+        String input = "[\"x\",,]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayExtraClose() throws Exception {
+        String input = "[\"x\"]]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayExtraComma() throws Exception {
+        String input = "[\"\",]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayIncomplete() throws Exception {
+        String input = "[\"x\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayIncompleteInvalid() throws Exception {
+        String input = "[x";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayInnerNoComma() throws Exception {
+        String input = "[3[4]]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArraySemicolonNotComma() throws Exception {
+        String input = "[1;2]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayJustComma() throws Exception {
+        String input = "[,]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayJustMinus() throws Exception {
+        String input = "[-]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayMissingValue() throws Exception {
+        String input = "[   , \"\"]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayNewlinesUnclosed() throws Exception {
+        String input = "[\"a\",\n" +
+                "4\n" +
+                ",1,";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayNumberAndComma() throws Exception {
+        String input = "[1,]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayNumberAndCommas() throws Exception {
+        String input = "[1,,]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArraySpacesTabFeed() throws Exception {
+        String input = "[\"\u000Ba\"\\f]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayStar() throws Exception {
+        String input = "[*]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnclosed() throws Exception {
+        String input = "[\"\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnclosedTrailingComma() throws Exception {
+        String input = "[1,";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnclosedNewlines() throws Exception {
+        String input = "[1,\n" +
+                "1\n" +
+                ",1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnclosedObject() throws Exception {
+        String input = "[{}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayFalseIncomplete() throws Exception {
+        String input = "[fals]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayNullIncomplete() throws Exception {
+        String input = "[nul]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayTrueIncomplete() throws Exception {
+        String input = "[tru]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Array1025Brackets() throws Exception {
+        String input = "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayAngleBracket() throws Exception {
+        String input = "<.>";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayAngleBracketNull() throws Exception {
+        String input = "[<null>]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayTrailingGarbage() throws Exception {
+        String input = "[1]x";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayExtraArrayClose() throws Exception {
+        String input = "[1]]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnclosedString() throws Exception {
+        String input = "[\"asd]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayUnopened() throws Exception {
+        String input = "1]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayDouble() throws Exception {
+        String input = "[][]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayClose() throws Exception {
+        String input = "]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpen() throws Exception {
+        String input = "[";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayNullByteOutsideString() throws Exception {
+        String input = "[\u0000]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenApostrophe() throws Exception {
+        String input = "['";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenComma() throws Exception {
+        String input = "[,";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenObj() throws Exception {
+        String input = "[{";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenObjMultiple() throws Exception {
+        String input = "[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{\"\":[{";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenQuoteLetter() throws Exception {
+        String input = "[\"a";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenString() throws Exception {
+        String input = "[\"a\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenDigit() throws Exception {
+        String input = "[1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenPartialNull() throws Exception {
+        String input = "[ false, nul";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenPartialFalse() throws Exception {
+        String input = "[ true, fals";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayOpenPartialTrue() throws Exception {
+        String input = "[ false, tru";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayU2060WordJoined() throws Exception {
+        String input = "[\u2060]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ArrayWhitespaceFormfeed() throws Exception {
+        String input = "[\f]";
+        parse(input);
+    }
 
 
 
@@ -293,6 +604,328 @@ public class MainTest {
     }
 
 
+    @Test(expected = ParserException.class)
+    public void NumberPlusPlus() throws Exception {
+        String input = "++1234";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberPlusOne() throws Exception {
+        String input = "+1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberPlusInf() throws Exception {
+        String input = "+Inf";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinus01() throws Exception {
+        String input = "-01";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinus1Point0Point() throws Exception {
+        String input = "-1.0.";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinus2Point() throws Exception {
+        String input = "-2.";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinusNaN() throws Exception {
+        String input = "-NaN";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberPointMinus1() throws Exception {
+        String input = ".-1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberPointExp() throws Exception {
+        String input = ".2e-3";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0Point1Point2() throws Exception {
+        String input = "0.1.2";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberExpPlus() throws Exception {
+        String input = "0.3e+";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNoExp() throws Exception {
+        String input = "0.3e";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0PointExp() throws Exception {
+        String input = "0.e1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0ExpUppercasePlus() throws Exception {
+        String input = "0E+";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0ExpUppercase() throws Exception {
+        String input = "0E";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0ExpPlus() throws Exception {
+        String input = "0e+";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number0Exp() throws Exception {
+        String input = "0e";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number1Point0ExpPlus() throws Exception {
+        String input = "1.0e+";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number1Point0ExpMinus() throws Exception {
+        String input = "1.0e-";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number1Point0Exp() throws Exception {
+        String input = "1.0e";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number1000Space() throws Exception {
+        String input = "1 000.0";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberDoubleExp() throws Exception {
+        String input = "1eE2";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number2PointExpPlus() throws Exception {
+        String input = "2.e+3";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number2PointExpMinus() throws Exception {
+        String input = "2.e-3";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number2PointExp() throws Exception {
+        String input = "2.e3";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void Number9PointExpPlus() throws Exception {
+        String input = "9.e+";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInf() throws Exception {
+        String input = "Inf";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNaN() throws Exception {
+        String input = "NaN";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberFullWidthDigitOne() throws Exception {
+        String input = "１";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberExpression() throws Exception {
+        String input = "1+2";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberHex1Digit() throws Exception {
+        String input = "0x1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberHex2Digits() throws Exception {
+        String input = "0x42";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInfinity() throws Exception {
+        String input = "Infinity";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberPlusMinus() throws Exception {
+        String input = "0e+-1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInvalidNegativeReal() throws Exception {
+        String input = "-123.123foo";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInvalidUnicodeBiggerInt() throws Exception {
+        String input = "123�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInvalidUnicode1Exp() throws Exception {
+        String input = "1e1�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInvalidUnicode() throws Exception {
+        String input = "0�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinusInfinity() throws Exception {
+        String input = "-Infinity";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNegativeGarbage() throws Exception {
+        String input = "-foo";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberMinusSpaceOne() throws Exception {
+        String input = "- 1";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNegativePaddedInt() throws Exception {
+        String input = "-012";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNegativeRealNoInt() throws Exception {
+        String input = "-.123";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberNegativeIntGarbage() throws Exception {
+        String input = "-1x";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberIntExpGarbage() throws Exception {
+        String input = "1ea";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberInvalidUnicodeExp() throws Exception {
+        String input = "1e�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberRealNoFraction() throws Exception {
+        String input = "1.";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberDot123() throws Exception {
+        String input = ".123";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberAlpha() throws Exception {
+        String input = "1.2a-3";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberAlphaChar() throws Exception {
+        String input = "1.8011670033376514H-308";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberLeadingZero() throws Exception {
+        String input = "012";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberEmpty() throws Exception {
+        String input = "";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void NumberTrailingGarbage() throws Exception {
+        String input = "2@";
+        parse(input);
+    }
+
+
+
+
+
 
 
 
@@ -422,6 +1055,257 @@ public class MainTest {
     }
 
 
+    @Test(expected = ParserException.class)
+    public void ObjectBadValue() throws Exception {
+        String input = "[\"x\", truth]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectBracketKey() throws Exception {
+        String input = "{[: \"x\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectCommaNotColon() throws Exception {
+        String input = "{\"x\", null}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectDoubleColon() throws Exception {
+        String input = "{\"x\"::\"b\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectEmoji() throws Exception {
+        String input = "{\uD83C\uDDE8\uD83C\uDDED}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectGarbageAtEnd() throws Exception {
+        String input = "{\"a\":\"a\" 123}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectSingleQuotes() throws Exception {
+        String input = "{key: 'value'";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectLoneContinuationByteKeyTrailingComma() throws Exception {
+        String input = "{\"�\":\"0\",}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectMissingColon() throws Exception {
+        String input = "{\"a\" b}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectMissingKey() throws Exception {
+        String input = "{:\"b\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectMissingValue() throws Exception {
+        String input = "{\"a\":";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectNoColonAndValue() throws Exception {
+        String input = "{\"a\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectNonStringKey() throws Exception {
+        String input = "{1:1}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectHugeIntKey() throws Exception {
+        String input = "{9999E9999:1}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectRepeatedNull() throws Exception {
+        String input = "{null:null,null:null}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingCommas() throws Exception {
+        String input = "{\"id\":0,,,,,}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectSingleQuote() throws Exception {
+        String input = "{'a':0}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingComma() throws Exception {
+        String input = "{\"id\":0,}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingComment() throws Exception {
+        String input = "{\"a\":\"b\"}/**/";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingCommentOpen() throws Exception {
+        String input = "{\"a\":\"b\"}/**//";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingCommentSlashOpen() throws Exception {
+        String input = "{\"a\":\"b\"}//";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingCommentSlashOpenIncomplete() throws Exception {
+        String input = "{\"a\":\"b\"}/";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectDoubleComma() throws Exception {
+        String input = "{\"a\":\"b\",,\"c\":\"d\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectNoQuotesKey() throws Exception {
+        String input = "{a: \"b\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectUnterminatedValue() throws Exception {
+        String input = "{\"a\":\"a";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectSingleString() throws Exception {
+        String input = "{ \"foo\" : \"bar\", \"a\" }";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingGarbage() throws Exception {
+        String input = "{\"a\":\"b\"}#";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectCommaNotClosingBrace() throws Exception {
+        String input = "{\"x\": true,";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectExtraClosing() throws Exception {
+        String input = "{}}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectNoValNoClose() throws Exception {
+        String input = "{\"\":";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectComment() throws Exception {
+        String input = "{\"a\":/*comment*/\"b\"}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingString() throws Exception {
+        String input = "{\"a\": true} \"x\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpen() throws Exception {
+        String input = "{";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenArrayClose() throws Exception {
+        String input = "{]";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenComma() throws Exception {
+        String input = "{,";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenArrayOpen() throws Exception {
+        String input = "{[";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenString() throws Exception {
+        String input = "{\"a";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenStringApostrophes() throws Exception {
+        String input = "{'a'";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectOpenOpen() throws Exception {
+        String input = "[\"\\{[\"\\{[\"\\{[\"\\{";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectTrailingHashtag() throws Exception {
+        String input = "{\"a\":\"b\"}#{}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectUnescapedLF() throws Exception {
+        String input = "\\u000A\"\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void ObjectUnclosedObj() throws Exception {
+        String input = "{\"asd\":\"asd\"";
+        parse(input);
+    }
 
 
 
@@ -709,18 +1593,251 @@ public class MainTest {
     @Test
     public void StringDelChar() throws Exception {
         String input = "[\"a\u007Fa\"]";
-        JSONArray expected = new JSONArray();
+        JSONArray expected = new JSONArray(new ArrayList<>(){{
+            add("a\u007Fa");
+        }});
         parseAndCompareArray("StringDelChar", input, expected);
     }
 
 
+    @Test(expected = ParserException.class)
+    public void StringSingleSpace() throws Exception {
+        String input = " ";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void String1SurrogateThenEscape() throws Exception {
+        String input = "\"\\uD800\\\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void String1SurrogateThenEscapeU() throws Exception {
+        String input = "\"\\uD800\\u\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void String1SurrogateThenEscapeU1() throws Exception {
+        String input = "\"\\uD800\\u1\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void String1SurrogateThenEscapeU1x() throws Exception {
+        String input = "\"\\uD800\\u1x\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringAccentuatedCharNoQuotes() throws Exception {
+        String input = "é";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringBackslash00() throws Exception {
+        String input = "\"\\\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringEscapeX() throws Exception {
+        String input = "\"\\x00\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringEscapedBackslashBad() throws Exception {
+        String input = "\"\\\\\\\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringEscapedCtrlCharTab() throws Exception {
+        String input = "\"\\\t\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringEscapedEmoji() throws Exception {
+        String input = "\"\\\uD83C\uDF00\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringIncompleteEscape() throws Exception {
+        String input = "\"\\\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringIncompleteEscapedChar() throws Exception {
+        String input = "\"\\u00A\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringIncompleteSurrogate() throws Exception {
+        String input = "\"\\uD834\\uDd\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringIncompleteSurrogateEscapeInvalid() throws Exception {
+        String input = "\"\\uD800\\uD800\\x\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringInvalidUnicodeInEscape() throws Exception {
+        String input = "\"\\u�\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringInvalidBackslashEsc() throws Exception {
+        String input = "\"\\a\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringInvalidUnicodeEsc() throws Exception {
+        String input = "\"\\uqqqq\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringInvalidUnicodeAfterEsc() throws Exception {
+        String input = "\"\\�\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringLeadingUnescapedThinspace() throws Exception {
+        String input = "\\u0020\"asd\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringNoQuotesWithBadEscape() throws Exception {
+        String input = "\\n";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringSingleDoubleQuote() throws Exception {
+        String input = "\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringSingleQuote() throws Exception {
+        String input = "'single quote'";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringSingleStringNoDoubleQuotes() throws Exception {
+        String input = "abc";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringStartEscapeUnclosed() throws Exception {
+        String input = "\"\\";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringUnescapedCtrlChar() throws Exception {
+        String input = "\"aa\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringUnescapedNewline() throws Exception {
+        String input = "\"new\n" +
+                "line\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringUnescapedTab() throws Exception {
+        String input = "\"\t\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringUnicodeCapitalU() throws Exception {
+        String input = "\"\\UA66D\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringTrailingGarbage() throws Exception {
+        String input = "\"\"x";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringU2060WordJoined() throws Exception {
+        String input = "\"\u2060\"";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringAsciiId() throws Exception {
+        String input = "aå";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringIncompleteBOM() throws Exception {
+        String input = "�{}";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringLoneInvalidUnicode() throws Exception {
+        String input = "�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringSingleEacute() throws Exception {
+        String input = "�";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringSingleStar() throws Exception {
+        String input = "*";
+        parse(input);
+    }
+
+    @Test(expected = ParserException.class)
+    public void StringUnicodeIdentifier() throws Exception {
+        String input = "å";
+        parse(input);
+    }
 
 
-        @Test
+
+
+    @Test
     public void Null() throws Exception {
         String input = "null";
         parseAndCompareNull("Null", input);
     }
+
+    @Test(expected = ParserException.class)
+    public void NullCapitalized() throws Exception {
+        String input = "Null";
+        parse(input);
+    }
+
 
     @Test
     public void False() throws Exception {
@@ -729,6 +1846,13 @@ public class MainTest {
         parseAndCompareBooleans("False", input, expected);
     }
 
+    @Test(expected = ParserException.class)
+    public void FalseCapitalized() throws Exception {
+        String input = "False";
+        parse(input);
+    }
+
+
     @Test
     public void True() throws Exception {
         String input = "true";
@@ -736,8 +1860,11 @@ public class MainTest {
         parseAndCompareBooleans("True", input, expected);
     }
 
-
-
+    @Test(expected = ParserException.class)
+    public void TrueCapitalized() throws Exception {
+        String input = "True";
+        parse(input);
+    }
 
 
     private void parseAndCompareNull(String message, String input) throws Exception {
@@ -778,7 +1905,7 @@ public class MainTest {
 
     // Helpers
 
-    private Object parse(String input) throws Exception {
+    private Object parse(String input) throws ParserException, IOException {
         createJsonFile(input);
         JsonLexer lexer = new JsonLexer("test.json");
         JsonParser parser = new JsonParser(lexer.extractTokens());
