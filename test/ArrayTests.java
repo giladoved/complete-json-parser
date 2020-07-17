@@ -1,24 +1,22 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class ArrayTests extends BaseTestClass {
 
     @Test
     public void ArrayWithSpaces() throws Exception {
         String input = "[[]   ]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(new JSONArray());
-        }});
+        }};
         parseAndCompareArray("ArrayWithSpaces", input, expected);
     }
 
     @Test
     public void ArrayEmptyString() throws Exception {
         String input = "[\"\"]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add("");
-        }});
+        }};
         parseAndCompareArray("ArrayEmptyString", input, expected);
     }
 
@@ -30,50 +28,99 @@ public class ArrayTests extends BaseTestClass {
     }
 
     @Test
+    public void ArrayEmptySpace() throws Exception {
+        String input = "[\n \n \n]";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayEmptySpace", input, expected);
+    }
+
+    @Test
+    public void ArrayLeading() throws Exception {
+        String input = " []";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayLeading", input, expected);
+    }
+
+    @Test
+    public void ArrayTrailing() throws Exception {
+        String input = "[] ";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayTrailing", input, expected);
+    }
+
+    @Test
+    public void ArrayLeadingAndTrailing() throws Exception {
+        String input = " [] ";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayLeadingAndTrailing", input, expected);
+    }
+
+    @Test
+    public void ArrayLeadingMultiple() throws Exception {
+        String input = "\n  []";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayLeading", input, expected);
+    }
+
+    @Test
+    public void ArrayTrailingMultiple() throws Exception {
+        String input = "[]  \n";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayTrailing", input, expected);
+    }
+
+    @Test
+    public void ArrayLeadingAndTrailingMultiple() throws Exception {
+        String input = "\n  []  \n";
+        JSONArray expected = new JSONArray();
+        parseAndCompareArray("ArrayLeadingAndTrailingMultiple", input, expected);
+    }
+
+    @Test
     public void ArrayEndingWithNewline() throws Exception {
         String input = "[\"a\"]\n";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add("a");
-        }});
+        }};
         parseAndCompareArray("ArrayEndingWithNewline", input, expected);
     }
 
     @Test
     public void ArrayFalse() throws Exception {
         String input = "[false]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(false);
-        }});
+        }};
         parseAndCompareArray("ArrayFalse", input, expected);
     }
 
     @Test
     public void ArrayTrue() throws Exception {
         String input = "[true]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(true);
-        }});
+        }};
         parseAndCompareArray("ArrayTrue", input, expected);
     }
 
     @Test
     public void ArrayNull() throws Exception {
         String input = "[null]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
-            add(new Null());
-        }});
+        JSONArray expected = new JSONArray() {{
+            add(null);
+        }};
         parseAndCompareArray("ArrayNull", input, expected);
     }
 
     @Test
     public void ArrayHeterogeneous() throws Exception {
         String input = "[null, 1, \"1\", {}]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
-            add(new Null());
+        JSONArray expected = new JSONArray() {{
+            add(null);
             add(1);
             add("1");
             add(new JSONObject());
-        }});
+        }};
         parseAndCompareArray("ArrayHeterogeneous", input, expected);
     }
 
@@ -81,58 +128,58 @@ public class ArrayTests extends BaseTestClass {
     public void ArrayOneWithNewline() throws Exception {
         String input = "[1\n" +
                 "]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(1);
-        }});
+        }};
         parseAndCompareArray("ArrayOneWithNewline", input, expected);
     }
 
     @Test
     public void ArrayLeadingSpace() throws Exception {
         String input = " [1]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(1);
-        }});
+        }};
         parseAndCompareArray("ArrayLeadingSpace", input, expected);
     }
 
     @Test
     public void ArrayManyNulls() throws Exception {
         String input = "[1,null,null,null,2]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(1);
-            add(new Null());
-            add(new Null());
-            add(new Null());
+            add(null);
+            add(null);
+            add(null);
             add(2);
-        }});
+        }};
         parseAndCompareArray("ArrayManyNulls", input, expected);
     }
 
     @Test
     public void ArrayTrailingSpace() throws Exception {
         String input = "[1] ";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add(1);
-        }});
+        }};
         parseAndCompareArray("ArrayTrailingSpace", input, expected);
     }
 
     @Test
     public void ArrayString() throws Exception {
         String input = "[\"abc\"]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add("abc");
-        }});
+        }};
         parseAndCompareArray("ArrayString", input, expected);
     }
 
     @Test
     public void ArrayStringLeadingSpace() throws Exception {
         String input = "[ \"abc\"]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
+        JSONArray expected = new JSONArray() {{
             add("abc");
-        }});
+        }};
         parseAndCompareArray("ArrayStringLeadingSpace", input, expected);
     }
 

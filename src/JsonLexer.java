@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JsonLexer {
+class JSONLexer {
 
     //    \"([^\"\\\p{Cntrl}]|\\.)*\"
     //    \"([^\"\\]|\\.)*\"
@@ -13,10 +13,14 @@ public class JsonLexer {
     //  -?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?
     private final Pattern numberPattern = Pattern.compile("-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?\\d+)?");
 
-    private String filename;
+    private final String filename;
 
-    public JsonLexer(String filename) {
+    public JSONLexer(String filename) {
         this.filename = filename;
+    }
+
+    public JSONLexer(File file) {
+        this.filename = file.getAbsolutePath();
     }
 
     public LinkedList<Token> extractTokens() throws IOException, ParserException {
@@ -77,16 +81,16 @@ public class JsonLexer {
                         tokens.add(new RightSquareBracket());
                         index++;
                     } else if (currentChar == Tab.unicode) {
-//                        tokens.add(new Tab());
+                        tokens.add(new Tab());
                         index++;
                     } else if (currentChar == LineFeed.unicode) {
-//                        tokens.add(new LineFeed());
+                        tokens.add(new LineFeed());
                         index++;
                     } else if (currentChar == CarriageReturn.unicode) {
-//                        tokens.add(new CarriageReturn());
+                        tokens.add(new CarriageReturn());
                         index++;
                     } else if (currentChar == Space.unicode) {
-//                        tokens.add(new Space());
+                        tokens.add(new Space());
                         index++;
                     } else {
                         throw new ParserException("Illegal token");

@@ -1,1 +1,32 @@
-false true null null false true 1035.135e3 122e-1 : ,dsv, "asdkjvan sdkjv anskdjv anlsdkj av",
+{
+  "article": {
+    "title": "example title",
+    "author": {
+      "name": "maria",
+      "address": "123 main st.",
+      "phone": "555-5555"
+    },
+    "pages": 27,
+    "reviews": [
+      {
+        "name": "john",
+        "rating": 4.5
+      },
+      {
+        "name": "mike",
+        "rating": 4.9
+      },
+      {
+        "name": "sue",
+        "rating": 4.1
+      },
+      {
+        "name": "molly",
+        "rating": 3.5
+      }
+    ],
+    "coauthor": null,
+    "bestSeller": false,
+    "published": true
+  }
+}

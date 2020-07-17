@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class StringTests extends BaseTestClass {
     @Test
     public void String() throws Exception {
@@ -15,6 +13,48 @@ public class StringTests extends BaseTestClass {
         String input = "\"\"";
         String expected = "";
         parseAndCompareStrings("Empty", input, expected);
+    }
+
+    @Test
+    public void StringLeading() throws Exception {
+        String input = " \"abc\"";
+        String expected = "abc";
+        parseAndCompareStrings("StringLeading", input, expected);
+    }
+
+    @Test
+    public void StringTrailing() throws Exception {
+        String input = "\"abc\" ";
+        String expected = "abc";
+        parseAndCompareStrings("StringTrailing", input, expected);
+    }
+
+    @Test
+    public void StringLeadingAndTrailing() throws Exception {
+        String input = " \"abc\" ";
+        String expected = "abc";
+        parseAndCompareStrings("StringLeading", input, expected);
+    }
+
+    @Test
+    public void StringLeadingMultiple() throws Exception {
+        String input = "\n  \"abc\"";
+        String expected = "abc";
+        parseAndCompareStrings("StringLeadingMultiple", input, expected);
+    }
+
+    @Test
+    public void StringTrailingMultiple() throws Exception {
+        String input = "\"abc\"  \n";
+        String expected = "abc";
+        parseAndCompareStrings("StringTrailingMultiple", input, expected);
+    }
+
+    @Test
+    public void StringLeadingAndTrailingMultiple() throws Exception {
+        String input = "\n \"abc\" \n";
+        String expected = "abc";
+        parseAndCompareStrings("StringLeadingAndTrailingMultiple", input, expected);
     }
 
     @Test()
@@ -285,11 +325,9 @@ public class StringTests extends BaseTestClass {
 
     @Test
     public void StringDelChar() throws Exception {
-        String input = "[\"a\u007Fa\"]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
-            add("a\u007Fa");
-        }});
-        parseAndCompareArray("StringDelChar", input, expected);
+        String input = "\"a\u007Fa\"";
+        String expected = "a\u007Fa";
+        parseAndCompareStrings("StringDelChar", input, expected);
     }
 
 
@@ -445,7 +483,7 @@ public class StringTests extends BaseTestClass {
 
     @Test(expected = ParserException.class)
     public void StringUnescapedCtrlChar() throws Exception {
-        String input = "\"aa\"";
+        String input = "\"a\u0000a\"";
         parse(input);
     }
 
@@ -471,12 +509,6 @@ public class StringTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void StringTrailingGarbage() throws Exception {
         String input = "\"\"x";
-        parse(input);
-    }
-
-    @Test(expected = ParserException.class)
-    public void StringU2060WordJoined() throws Exception {
-        String input = "\"\u2060\"";
         parse(input);
     }
 

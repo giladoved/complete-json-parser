@@ -1,53 +1,50 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class ObjectTests extends BaseTestClass {
     @Test()
     public void ObjectBasic() throws Exception {
         String input = "{\"asd\":\"sdf\"}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("asd", "sdf");
-        }});
+        }};
         parseAndCompareObjects("ObjectBasic", input, expected);
     }
 
     @Test()
     public void ObjectTwoInts() throws Exception {
         String input = "{\"mykey\": 2, \"key2\": -99}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("mykey", 2);
             put("key2", -99);
-        }});
+        }};
         parseAndCompareObjects("ObjectTwoInts", input, expected);
     }
 
     @Test()
     public void ObjectTwoStrings() throws Exception {
         String input = "{\"asd\":\"sdf\", \"dfg\":\"fgh\"}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("asd", "sdf");
             put("dfg", "fgh");
-        }});
+        }};
         parseAndCompareObjects("ObjectTwoStrings", input, expected);
     }
 
     @Test()
     public void ObjectDuplicateKeys() throws Exception {
         String input = "{\"a\":\"b\",\"a\":\"c\"}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("a", "c");
-        }});
+        }};
         parseAndCompareObjects("ObjectDuplicateKeys", input, expected);
     }
 
     @Test()
     public void ObjectDuplicateItems() throws Exception {
         String input = "{\"a\":\"b\",\"a\":\"b\"}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("a", "b");
-        }});
+        }};
         parseAndCompareObjects("ObjectDuplicateItems", input, expected);
     }
 
@@ -59,62 +56,123 @@ public class ObjectTests extends BaseTestClass {
     }
 
     @Test()
+    public void ObjectEmptySpace() throws Exception {
+        String input = "{\n \n \n}";
+        JSONObject expected = new JSONObject();
+        parseAndCompareObjects("ObjectEmpty", input, expected);
+    }
+
+    @Test()
+    public void ObjectLeading() throws Exception {
+        String input = "{ \"asd\":\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectLeading", input, expected);
+    }
+
+    @Test()
+    public void ObjectTrailing() throws Exception {
+        String input = "{\"asd\" :\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectTrailing", input, expected);
+    }
+
+    @Test()
+    public void ObjectLeadingAndTrailing() throws Exception {
+        String input = "{ \"asd\" :\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectLeadingAndTrailing", input, expected);
+    }
+
+    @Test()
+    public void ObjectLeadingMultiple() throws Exception {
+        String input = "{\n   \"asd\":\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectLeadingMultiple", input, expected);
+    }
+
+    @Test()
+    public void ObjectTrailingMultiple() throws Exception {
+        String input = "{\"asd\"   \n:\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectTrailingMultiple", input, expected);
+    }
+
+    @Test()
+    public void ObjectLeadingAndTrailingMultiple() throws Exception {
+        String input = "{\n   \"asd\"  \n:\"sdf\"}";
+        JSONObject expected = new JSONObject() {{
+            put("asd", "sdf");
+        }};
+        parseAndCompareObjects("ObjectLeadingAndTrailingMultiple", input, expected);
+    }
+
+    @Test()
     public void ObjectEmptyKey() throws Exception {
         String input = "{\"\":0}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("", 0);
-        }});
+        }};
         parseAndCompareObjects("ObjectEmptyKey", input, expected);
     }
 
     @Test()
     public void ObjectEscapedNullKey() throws Exception {
         String input = "{\"foo\\u0000bar\": 42}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("foo\u0000bar", 42);
-        }});
+        }};
         parseAndCompareObjects("ObjectEscapedNullKey", input, expected);
     }
 
     @Test()
     public void ObjectExtremeNumbers() throws Exception {
         String input = "{ \"min\": -1.0e+28, \"max\": 1.0e+28 }";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("min", -1.0e+28);
             put("max", 1.0e+28);
-        }});
+        }};
         parseAndCompareObjects("ObjectExtremeNumbers", input, expected);
     }
 
     @Test()
     public void ObjectLongStrings() throws Exception {
         String input = "{\"x\":[{\"id\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}], \"id\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
-            put("x", new JSONArray(new ArrayList<>() {{
-                add(new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
+            put("x", new JSONArray() {{
+                add(new JSONObject() {{
                     put("id", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                }}));
-            }}));
+                }});
+            }});
             put("id", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        }});
+        }};
         parseAndCompareObjects("ObjectLongStrings", input, expected);
     }
 
     @Test()
     public void ObjectEmptyArray() throws Exception {
         String input = "{\"a\":[]}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("a", new JSONArray());
-        }});
+        }};
         parseAndCompareObjects("ObjectEmptyArray", input, expected);
     }
 
     @Test()
     public void ObjectStringUnicode() throws Exception {
         String input = "{\"title\":\"\\u041f\\u043e\\u043b\\u0442\\u043e\\u0440\\u0430 \\u0417\\u0435\\u043c\\u043b\\u0435\\u043a\\u043e\\u043f\\u0430\" }";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("title", "Полтора Землекопа");
-        }});
+        }};
         parseAndCompareObjects("ObjectStringUnicode", input, expected);
     }
 
@@ -123,9 +181,9 @@ public class ObjectTests extends BaseTestClass {
         String input = "{\n" +
                 "\"a\": \"b\"\n" +
                 "}";
-        JSONObject expected = new JSONObject(new HashMap<>() {{
+        JSONObject expected = new JSONObject() {{
             put("a", "b");
-        }});
+        }};
         parseAndCompareObjects("ObjectNewlines", input, expected);
     }
 

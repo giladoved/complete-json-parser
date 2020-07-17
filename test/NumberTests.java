@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class NumberTests extends BaseTestClass {
 
     @Test
@@ -41,11 +39,51 @@ public class NumberTests extends BaseTestClass {
 
     @Test
     public void NumberAfterSpace() throws Exception {
-        String input = "[ 4]";
-        JSONArray expected = new JSONArray(new ArrayList<>() {{
-            add(4);
-        }});
-        parseAndCompareArray("NumberAfterSpace", input, expected);
+        String input = " 4";
+        int expected = 4;
+        parseAndCompareIntegers("NumberAfterSpace", input, expected);
+    }
+
+    @Test
+    public void NumberLeading() throws Exception {
+        String input = " 51";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberLeading", input, expected);
+    }
+
+    @Test
+    public void NumberTrailing() throws Exception {
+        String input = "51 ";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberTrailing", input, expected);
+    }
+
+    @Test
+    public void NumberLeadingAndTrailing() throws Exception {
+        String input = " 51 ";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberLeadingAndTrailing", input, expected);
+    }
+
+    @Test
+    public void NumberLeadingMultiple() throws Exception {
+        String input = "\n  51";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberLeadingMultiple", input, expected);
+    }
+
+    @Test
+    public void NumberTrailingMultiple() throws Exception {
+        String input = "51 \n";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberTrailingMultiple", input, expected);
+    }
+
+    @Test
+    public void NumberLeadingAndTrailingMultiple() throws Exception {
+        String input = "\n  51  \n";
+        Integer expected = 51;
+        parseAndCompareIntegers("NumberLeadingAndTrailingMultiple", input, expected);
     }
 
     @Test

@@ -83,12 +83,11 @@ class Null extends Token {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Null;
+        return obj == null || obj instanceof Null;
     }
 }
 
-class Whitespace extends Token {
-
+abstract class Whitespace extends Token {
 }
 
 class Tab extends Whitespace {
@@ -127,9 +126,9 @@ class Space extends Whitespace {
     }
 }
 
-
 class NumberToken extends Token {
     String number;
+
     public NumberToken(String number) {
         this.number = number;
     }

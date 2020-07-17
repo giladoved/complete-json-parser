@@ -1,20 +1,26 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 
-public class JsonParser {
-    private final int MAX_DEPTH = 1024;
+public class JSONParser {
+    private static final int MAX_DEPTH = 1024;
 
-    private final LinkedList<Token> tokens;
+    private final JSONLexer lexer;
+    private LinkedList<Token> tokens;
     private int stackDepth = 0;
 
-    public JsonParser(LinkedList<Token> tokens) {
-        this.tokens = tokens;
+    public JSONParser(String filename) {
+        lexer = new JSONLexer(filename);
     }
 
-    public Object parse() throws ParserException {
+    public JSONParser(File file) {
+        lexer = new JSONLexer(file);
+    }
+
+    public Object parse() throws ParserException, IOException {
+        this.tokens = lexer.extractTokens();
+
         Object parsed = parseTokens();
-        if (parsed == null) {
-            throw new ParserException("Invalid Json");
-        }
         if (tokens.size() > 0) {
             throw new ParserException("No trailing tokens");
         }
@@ -30,25 +36,38 @@ public class JsonParser {
             return "";
         }
 
-        Token token = tokens.pop();
+        clearWhitespace();
+
+        Token token;
+        if (tokens.size() == 0) {
+            throw new ParserException("Empty json");
+        } else {
+            token = tokens.pop();
+        }
+
         if (token instanceof True) {
+            clearWhitespace();
             return true;
         } else if (token instanceof False) {
+            clearWhitespace();
             return false;
         } else if (token instanceof Null) {
-            return new Null();
+            clearWhitespace();
+            return null;
         } else if (token instanceof StringToken) {
+            clearWhitespace();
             return ((StringToken) token).string;
         } else if (token instanceof NumberToken) {
+            clearWhitespace();
             String number = ((NumberToken) token).number;
             try {
                 return Integer.parseInt(number);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
             }
 
             try {
                 return Double.parseDouble(number);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
             }
 
             throw new ParserException("Invalid number");
@@ -60,14 +79,16 @@ public class JsonParser {
             return parseObject();
         }
 
-        return null;
+        throw new ParserException("Invalid Json");
     }
 
     private JSONObject parseObject() throws ParserException {
         JSONObject jsonObject = new JSONObject();
 
+        clearWhitespace();
         if (tokens.peek() instanceof RightCurlyBracket) {
             tokens.pop();
+            clearWhitespace();
             return jsonObject;
         }
 
@@ -75,23 +96,25 @@ public class JsonParser {
             if (tokens.size() == 0) {
                 throw new ParserException("Need closing bracket");
             }
+
+
+            clearWhitespace();
             Token keyToken = tokens.pop();
             if (!(keyToken instanceof StringToken)) {
                 throw new ParserException("String key expected");
             }
+            clearWhitespace();
 
             if (tokens.size() == 0) {
                 throw new ParserException("Need closing bracket");
             }
+
             Token colonToken = tokens.pop();
             if (!(colonToken instanceof Colon)) {
-                throw new ParserException("Colon expected");
+                throw new ParserException("lexer.Colon expected");
             }
 
             Object parsed = parseTokens();
-            if (parsed == null) {
-                throw new ParserException("Invalid token");
-            }
             jsonObject.put(((StringToken) keyToken).string, parsed);
 
             if (tokens.size() == 0) {
@@ -99,9 +122,10 @@ public class JsonParser {
             }
             Token afterItem = tokens.pop();
             if (afterItem instanceof RightCurlyBracket) {
+                clearWhitespace();
                 return jsonObject;
             } else if (!(afterItem instanceof Comma)) {
-                throw new ParserException("Comma error");
+                throw new ParserException("lexer.Comma error");
             }
         }
     }
@@ -109,16 +133,15 @@ public class JsonParser {
     private JSONArray parseArray() throws ParserException {
         JSONArray jsonArray = new JSONArray();
 
+        clearWhitespace();
         if (tokens.peek() instanceof RightSquareBracket) {
             tokens.pop();
+            clearWhitespace();
             return jsonArray;
         }
 
         while (true) {
             Object parsed = parseTokens();
-            if (parsed == null) {
-                throw new ParserException("Invalid token");
-            }
             jsonArray.add(parsed);
 
             if (tokens.size() == 0) {
@@ -127,10 +150,17 @@ public class JsonParser {
 
             Token afterItem = tokens.pop();
             if (afterItem instanceof RightSquareBracket) {
+                clearWhitespace();
                 return jsonArray;
             } else if (!(afterItem instanceof Comma)) {
-                throw new ParserException("Comma error");
+                throw new ParserException("lexer.Comma error");
             }
+        }
+    }
+
+    private void clearWhitespace() {
+        while (tokens.peek() instanceof Whitespace) {
+            tokens.pop();
         }
     }
 }
