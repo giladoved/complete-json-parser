@@ -1,28 +1,55 @@
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class Main {
 
+    private static final String resourcesDir = "src/resources";
+
     public static void main(String[] args) {
-        String expected =
-                "[\"a\u0000a\"]";
-        org.json.JSONArray res = new org.json.JSONArray(expected);
-        Object swag = res.get(0);
-        System.out.println("~~");
-        System.out.println(swag);
-        System.out.println("~~");
-
-
+        // Uncomment to run the sample usage code
 //        sampleUsage();
+
+        // Uncomment to run the performance benchmarks against the org.json lib using a json file of your choice
+//        runBenchmarks("big.json");
+    }
+
+    public static void runBenchmarks(String filename) {
+        try {
+            File hugeJson = new File(resourcesDir, filename);
+            String hugeJsonString = Files.readString(hugeJson.toPath());
+
+            long orgJson = benchmarkOrgJson(hugeJsonString);
+            System.out.println("org.json took: " + orgJson + "ms");
+
+            long myJsonParser = benchmarkMyJsonParser(hugeJsonString);
+            System.out.println("my json parser took: " + myJsonParser + "ms");
+        } catch (IOException | ParserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static long benchmarkMyJsonParser(String jsonStr) throws IOException, ParserException {
+        long before = System.currentTimeMillis();
+        JSONArray arr = new JSONParser(jsonStr).parseJSONArray();
+        long ms = System.currentTimeMillis() - before;
+        assert arr.getJSONObject(24).getString("type").equals("TestingValue");
+        return ms;
+    }
+
+    public static long benchmarkOrgJson(String jsonStr) {
+        long before = System.currentTimeMillis();
+        org.json.JSONArray arr = new org.json.JSONArray(jsonStr);
+        long ms = System.currentTimeMillis() - before;
+        assert arr.getJSONObject(24).getString("type").equals("FeatureCollection");
+        return ms;
     }
 
     public static void sampleUsage() {
-        File baseDir = new File("/Users/giladoved/dev/jsonparser/out/production/jsonparser");
-        File sampleJson = new File(baseDir, "sample.json");
+        File sampleJson = new File(resourcesDir, "sample.json");
 
         try {
-            Object obj = new JSONParser(sampleJson).parse();
-            JSONObject jsonObject = (JSONObject) obj;
+            JSONObject jsonObject = new JSONParser(sampleJson).parseJSONObject();
 
             JSONObject article = jsonObject.getJSONObject("article");
 
@@ -33,9 +60,9 @@ public class Main {
             String authorName = author.getString("name");
             String authorAddress = author.getString("address");
             String authorPhone = author.getString("phone");
-            System.out.println("authorName: " + authorName);
-            System.out.println("authorAddress: " + authorAddress);
-            System.out.println("authorPhone: " + authorPhone);
+            System.out.println("author name: " + authorName);
+            System.out.println("author address: " + authorAddress);
+            System.out.println("author phone: " + authorPhone);
 
             Integer pages = article.getInteger("pages");
             System.out.println("pages: " + pages);
@@ -54,13 +81,13 @@ public class Main {
             Boolean bestSeller = article.getBoolean("bestSeller");
             Boolean published = article.getBoolean("published");
 
-            System.out.println("bestSeller: " + bestSeller);
+            System.out.println("best seller: " + bestSeller);
             System.out.println("published: " + published);
 
         } catch (ParserException e) {
-            System.out.println("Error parsing file: " + e.getLocalizedMessage());
+            System.err.println("Error parsing file: " + e.getLocalizedMessage());
         } catch (IOException e) {
-            System.out.println("Error opening file");
+            System.err.println("Error opening file");
         }
     }
 }

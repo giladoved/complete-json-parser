@@ -47,12 +47,12 @@ public class NullTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void NullCapitalized() throws Exception {
         String input = "lexer.Null";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NullUppercase() throws Exception {
         String input = "NULL";
-        parse(input);
+        getParser(input).parse();
     }
 }

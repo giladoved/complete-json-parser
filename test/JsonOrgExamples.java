@@ -2,9 +2,12 @@ import org.junit.Test;
 
 import java.io.File;
 
-// https://json.org/example.html
-
+/**
+ * Tests from https://json.org/example.html
+ */
 public class JsonOrgExamples extends BaseTestClass {
+
+    private final String resourcesPath = super.resourcesPath + "/examples";
 
     @Test
     public void Example1() throws Exception {

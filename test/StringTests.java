@@ -247,13 +247,6 @@ public class StringTests extends BaseTestClass {
     }
 
     @Test()
-    public void StringCharDel() throws Exception {
-        String input = "\"\u007F\"";
-        String expected = "";
-        parseAndCompareStrings("StringCharDel", input, expected);
-    }
-
-    @Test()
     public void StringUnicode() throws Exception {
         String input = "\"\\uA66D\"";
         String expected = "ꙭ";
@@ -323,228 +316,209 @@ public class StringTests extends BaseTestClass {
         parseAndCompareStrings("StringEscapedUnicodeQuote", input, expected);
     }
 
-    @Test
-    public void StringDelChar() throws Exception {
-        String input = "\"a\u007Fa\"";
-        String expected = "a\u007Fa";
-        parseAndCompareStrings("StringDelChar", input, expected);
-    }
-
 
     @Test(expected = ParserException.class)
     public void StringSingleSpace() throws Exception {
         String input = " ";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void String1SurrogateThenEscape() throws Exception {
         String input = "\"\\uD800\\\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void String1SurrogateThenEscapeU() throws Exception {
         String input = "\"\\uD800\\u\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void String1SurrogateThenEscapeU1() throws Exception {
         String input = "\"\\uD800\\u1\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void String1SurrogateThenEscapeU1x() throws Exception {
         String input = "\"\\uD800\\u1x\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringAccentuatedCharNoQuotes() throws Exception {
         String input = "é";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringBackslash00() throws Exception {
         String input = "\"\\\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringEscapeX() throws Exception {
         String input = "\"\\x00\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringEscapedBackslashBad() throws Exception {
         String input = "\"\\\\\\\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringEscapedCtrlCharTab() throws Exception {
         String input = "\"\\\t\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringEscapedEmoji() throws Exception {
         String input = "\"\\\uD83C\uDF00\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringIncompleteEscape() throws Exception {
         String input = "\"\\\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringIncompleteEscapedChar() throws Exception {
         String input = "\"\\u00A\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringIncompleteSurrogate() throws Exception {
         String input = "\"\\uD834\\uDd\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringIncompleteSurrogateEscapeInvalid() throws Exception {
         String input = "\"\\uD800\\uD800\\x\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringInvalidUnicodeInEscape() throws Exception {
         String input = "\"\\u�\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringInvalidBackslashEsc() throws Exception {
         String input = "\"\\a\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringInvalidUnicodeEsc() throws Exception {
         String input = "\"\\uqqqq\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringInvalidUnicodeAfterEsc() throws Exception {
         String input = "\"\\�\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringLeadingUnescapedThinspace() throws Exception {
         String input = "\\u0020\"asd\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringNoQuotesWithBadEscape() throws Exception {
         String input = "\\n";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringSingleDoubleQuote() throws Exception {
         String input = "\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringSingleQuote() throws Exception {
         String input = "'single quote'";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringSingleStringNoDoubleQuotes() throws Exception {
         String input = "abc";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringStartEscapeUnclosed() throws Exception {
         String input = "\"\\";
-        parse(input);
-    }
-
-    @Test(expected = ParserException.class)
-    public void StringUnescapedCtrlChar() throws Exception {
-        String input = "\"a\u0000a\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringUnescapedNewline() throws Exception {
         String input = "\"new\n" +
                 "line\"";
-        parse(input);
-    }
-
-    @Test(expected = ParserException.class)
-    public void StringUnescapedTab() throws Exception {
-        String input = "\"\t\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringUnicodeCapitalU() throws Exception {
         String input = "\"\\UA66D\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringTrailingGarbage() throws Exception {
         String input = "\"\"x";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringAsciiId() throws Exception {
         String input = "aå";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringIncompleteBOM() throws Exception {
         String input = "�{}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringLoneInvalidUnicode() throws Exception {
         String input = "�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringSingleEacute() throws Exception {
         String input = "�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringSingleStar() throws Exception {
         String input = "*";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void StringUnicodeIdentifier() throws Exception {
         String input = "å";
-        parse(input);
+        getParser(input).parse();
     }
 }

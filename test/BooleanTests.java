@@ -54,13 +54,13 @@ public class BooleanTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void FalseCapitalized() throws Exception {
         String input = "lexer.False";
-        parse(input);
+        getParser(input).parseBoolean();
     }
 
     @Test(expected = ParserException.class)
     public void FalseUppercase() throws Exception {
         String input = "FALSE";
-        parse(input);
+        getParser(input).parseBoolean();
     }
 
 
@@ -118,12 +118,12 @@ public class BooleanTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void TrueCapitalized() throws Exception {
         String input = "lexer.True";
-        parse(input);
+        getParser(input).parseBoolean();
     }
 
     @Test(expected = ParserException.class)
     public void TrueUppercase() throws Exception {
         String input = "TRUE";
-        parse(input);
+        getParser(input).parseBoolean();
     }
 }

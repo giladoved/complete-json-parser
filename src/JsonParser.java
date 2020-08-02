@@ -9,12 +9,36 @@ public class JSONParser {
     private LinkedList<Token> tokens;
     private int stackDepth = 0;
 
-    public JSONParser(String filename) {
-        lexer = new JSONLexer(filename);
+    public JSONParser(String jsonStr) {
+        lexer = new JSONLexer(jsonStr);
     }
 
     public JSONParser(File file) {
         lexer = new JSONLexer(file);
+    }
+
+    public String parseString() throws ParserException, IOException {
+        return (String) parse();
+    }
+
+    public Boolean parseBoolean() throws ParserException, IOException {
+        return (Boolean) parse();
+    }
+
+    public Integer parseInteger() throws ParserException, IOException {
+        return (Integer) parse();
+    }
+
+    public Double parseDouble() throws ParserException, IOException {
+        return (Double) parse();
+    }
+
+    public JSONArray parseJSONArray() throws ParserException, IOException {
+        return (JSONArray) parse();
+    }
+
+    public JSONObject parseJSONObject() throws ParserException, IOException {
+        return (JSONObject) parse();
     }
 
     public Object parse() throws ParserException, IOException {

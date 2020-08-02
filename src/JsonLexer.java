@@ -8,15 +8,16 @@ class JSONLexer {
 
     //    \"([^\"\\\p{Cntrl}]|\\.)*\"
     //    \"([^\"\\]|\\.)*\"
-    private final Pattern stringPattern = Pattern.compile("\\\"([^\\\"\\\\]|\\\\.)*\\\"");
+    private final Pattern stringPattern = Pattern.compile("\\\"([^\\\"\\\\\\p{Cntrl}]|\\\\.)*\\\"");
 
     //  -?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?
     private final Pattern numberPattern = Pattern.compile("-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?\\d+)?");
 
-    private final String filename;
+    private String filename;
+    private String jsonStr;
 
-    public JSONLexer(String filename) {
-        this.filename = filename;
+    public JSONLexer(String jsonStr) {
+        this.jsonStr = jsonStr;
     }
 
     public JSONLexer(File file) {
@@ -24,85 +25,104 @@ class JSONLexer {
     }
 
     public LinkedList<Token> extractTokens() throws IOException, ParserException {
+        if (filename != null) {
+            return extractTokensFromFile();
+        } else if (jsonStr != null) {
+            return extractTokensFromJsonStr();
+        }
+
+        return null;
+    }
+
+    public LinkedList<Token> extractTokensFromJsonStr() throws IOException, ParserException {
+        BufferedReader reader = new BufferedReader(new StringReader(jsonStr));
+        return extractTokensFromBufferedReader(reader);
+    }
+
+    public LinkedList<Token> extractTokensFromFile() throws IOException, ParserException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename))));
+        return extractTokensFromBufferedReader(reader);
+    }
+
+    public LinkedList<Token> extractTokensFromBufferedReader(BufferedReader reader) throws IOException, ParserException {
         LinkedList<Token> tokens = new LinkedList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename))))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                int index = 0;
-                while (index < line.length()) {
-                    String subline = line.substring(index);
+        String line;
+        while ((line = reader.readLine()) != null) {
+            int index = 0;
+            while (index < line.length()) {
+                String subline = line.substring(index);
 
-                    Matcher stringMatcher = stringPattern.matcher(subline);
-                    Matcher numberMatcher = numberPattern.matcher(subline);
+                Matcher stringMatcher = stringPattern.matcher(subline);
+                Matcher numberMatcher = numberPattern.matcher(subline);
 
-                    char currentChar = subline.charAt(0);
-                    if (subline.contains(new String(True.unicode)) && subline.length() >= True.unicode.length && subline.substring(0, True.unicode.length).equals(new String(True.unicode))) {
-                        tokens.add(new True());
-                        index += True.unicode.length;
-                    } else if (subline.contains(new String(False.unicode)) && subline.length() >= False.unicode.length && subline.substring(0, False.unicode.length).equals(new String(False.unicode))) {
-                        tokens.add(new False());
-                        index += False.unicode.length;
-                    } else if (subline.contains(new String(Null.unicode)) && subline.length() >= Null.unicode.length && subline.substring(0, Null.unicode.length).equals(new String(Null.unicode))) {
-                        tokens.add(new Null());
-                        index += Null.unicode.length;
-                    } else if (numberMatcher.find() && numberMatcher.start() == 0) {
-                        tokens.add(new NumberToken(subline.substring(numberMatcher.start(), numberMatcher.end())));
-                        index += numberMatcher.end();
-                    } else if (stringMatcher.find() && stringMatcher.start() == 0) {
-                        String val = subline.substring(stringMatcher.start() + 1, stringMatcher.end() - 1);
-                        if (val.length() == 0) {
-                            tokens.add(new StringToken());
-                            index += stringMatcher.end();
-                        } else if (!isValidUnicode(val)) {
-                            throw new ParserException("Illegal unicode");
-                        } else if (hasValidEscapes(val)) {
-                            String string = convertToEscapedChars(val);
-                            tokens.add(new StringToken(string));
-                            index += stringMatcher.end();
-                        } else {
-                            throw new ParserException("Illegal string");
-                        }
-                    } else if (currentChar == Colon.unicode) {
-                        tokens.add(new Colon());
-                        index++;
-                    } else if (currentChar == Comma.unicode) {
-                        tokens.add(new Comma());
-                        index++;
-                    } else if (currentChar == LeftCurlyBracket.unicode) {
-                        tokens.add(new LeftCurlyBracket());
-                        index++;
-                    } else if (currentChar == LeftSquareBracket.unicode) {
-                        tokens.add(new LeftSquareBracket());
-                        index++;
-                    } else if (currentChar == RightCurlyBracket.unicode) {
-                        tokens.add(new RightCurlyBracket());
-                        index++;
-                    } else if (currentChar == RightSquareBracket.unicode) {
-                        tokens.add(new RightSquareBracket());
-                        index++;
-                    } else if (currentChar == Tab.unicode) {
-                        tokens.add(new Tab());
-                        index++;
-                    } else if (currentChar == LineFeed.unicode) {
-                        tokens.add(new LineFeed());
-                        index++;
-                    } else if (currentChar == CarriageReturn.unicode) {
-                        tokens.add(new CarriageReturn());
-                        index++;
-                    } else if (currentChar == Space.unicode) {
-                        tokens.add(new Space());
-                        index++;
+                char currentChar = subline.charAt(0);
+                if (subline.contains(new String(True.unicode)) && subline.length() >= True.unicode.length && subline.substring(0, True.unicode.length).equals(new String(True.unicode))) {
+                    tokens.add(new True());
+                    index += True.unicode.length;
+                } else if (subline.contains(new String(False.unicode)) && subline.length() >= False.unicode.length && subline.substring(0, False.unicode.length).equals(new String(False.unicode))) {
+                    tokens.add(new False());
+                    index += False.unicode.length;
+                } else if (subline.contains(new String(Null.unicode)) && subline.length() >= Null.unicode.length && subline.substring(0, Null.unicode.length).equals(new String(Null.unicode))) {
+                    tokens.add(new Null());
+                    index += Null.unicode.length;
+                } else if (numberMatcher.find() && numberMatcher.start() == 0) {
+                    tokens.add(new NumberToken(subline.substring(numberMatcher.start(), numberMatcher.end())));
+                    index += numberMatcher.end();
+                } else if (stringMatcher.find() && stringMatcher.start() == 0) {
+                    String val = subline.substring(stringMatcher.start() + 1, stringMatcher.end() - 1);
+                    if (val.length() == 0) {
+                        tokens.add(new StringToken());
+                        index += stringMatcher.end();
+                    } else if (!isValidUnicode(val)) {
+                        throw new ParserException("Illegal unicode");
+                    } else if (hasValidEscapes(val)) {
+                        String string = convertToEscapedChars(val);
+                        tokens.add(new StringToken(string));
+                        index += stringMatcher.end();
                     } else {
-                        throw new ParserException("Illegal token");
+                        throw new ParserException("Illegal string");
                     }
+                } else if (currentChar == Colon.unicode) {
+                    tokens.add(new Colon());
+                    index++;
+                } else if (currentChar == Comma.unicode) {
+                    tokens.add(new Comma());
+                    index++;
+                } else if (currentChar == LeftCurlyBracket.unicode) {
+                    tokens.add(new LeftCurlyBracket());
+                    index++;
+                } else if (currentChar == LeftSquareBracket.unicode) {
+                    tokens.add(new LeftSquareBracket());
+                    index++;
+                } else if (currentChar == RightCurlyBracket.unicode) {
+                    tokens.add(new RightCurlyBracket());
+                    index++;
+                } else if (currentChar == RightSquareBracket.unicode) {
+                    tokens.add(new RightSquareBracket());
+                    index++;
+                } else if (currentChar == Tab.unicode) {
+                    tokens.add(new Tab());
+                    index++;
+                } else if (currentChar == LineFeed.unicode) {
+                    tokens.add(new LineFeed());
+                    index++;
+                } else if (currentChar == CarriageReturn.unicode) {
+                    tokens.add(new CarriageReturn());
+                    index++;
+                } else if (currentChar == Space.unicode) {
+                    tokens.add(new Space());
+                    index++;
+                } else {
+                    throw new ParserException("Illegal token");
                 }
             }
-
-            if (tokens.size() == 0) {
-                throw new ParserException("Empty File");
-            }
-            return tokens;
         }
+        reader.close();
+
+        if (tokens.size() == 0) {
+            throw new ParserException("Empty File");
+        }
+        return tokens;
     }
 
     private boolean isValidUnicode(String str) {

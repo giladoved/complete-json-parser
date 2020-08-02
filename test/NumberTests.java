@@ -174,318 +174,318 @@ public class NumberTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void NumberPlusPlus() throws Exception {
         String input = "++1234";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberPlusOne() throws Exception {
         String input = "+1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberPlusInf() throws Exception {
         String input = "+Inf";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinus01() throws Exception {
         String input = "-01";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinus1Point0Point() throws Exception {
         String input = "-1.0.";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinus2Point() throws Exception {
         String input = "-2.";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinusNaN() throws Exception {
         String input = "-NaN";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberPointMinus1() throws Exception {
         String input = ".-1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberPointExp() throws Exception {
         String input = ".2e-3";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0Point1Point2() throws Exception {
         String input = "0.1.2";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberExpPlus() throws Exception {
         String input = "0.3e+";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNoExp() throws Exception {
         String input = "0.3e";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0PointExp() throws Exception {
         String input = "0.e1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0ExpUppercasePlus() throws Exception {
         String input = "0E+";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0ExpUppercase() throws Exception {
         String input = "0E";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0ExpPlus() throws Exception {
         String input = "0e+";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number0Exp() throws Exception {
         String input = "0e";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number1Point0ExpPlus() throws Exception {
         String input = "1.0e+";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number1Point0ExpMinus() throws Exception {
         String input = "1.0e-";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number1Point0Exp() throws Exception {
         String input = "1.0e";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number1000Space() throws Exception {
         String input = "1 000.0";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberDoubleExp() throws Exception {
         String input = "1eE2";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number2PointExpPlus() throws Exception {
         String input = "2.e+3";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number2PointExpMinus() throws Exception {
         String input = "2.e-3";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number2PointExp() throws Exception {
         String input = "2.e3";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void Number9PointExpPlus() throws Exception {
         String input = "9.e+";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInf() throws Exception {
         String input = "Inf";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNaN() throws Exception {
         String input = "NaN";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberFullWidthDigitOne() throws Exception {
         String input = "１";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberExpression() throws Exception {
         String input = "1+2";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberHex1Digit() throws Exception {
         String input = "0x1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberHex2Digits() throws Exception {
         String input = "0x42";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInfinity() throws Exception {
         String input = "Infinity";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberPlusMinus() throws Exception {
         String input = "0e+-1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInvalidNegativeReal() throws Exception {
         String input = "-123.123foo";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInvalidUnicodeBiggerInt() throws Exception {
         String input = "123�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInvalidUnicode1Exp() throws Exception {
         String input = "1e1�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInvalidUnicode() throws Exception {
         String input = "0�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinusInfinity() throws Exception {
         String input = "-Infinity";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNegativeGarbage() throws Exception {
         String input = "-foo";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberMinusSpaceOne() throws Exception {
         String input = "- 1";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNegativePaddedInt() throws Exception {
         String input = "-012";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNegativeRealNoInt() throws Exception {
         String input = "-.123";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberNegativeIntGarbage() throws Exception {
         String input = "-1x";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberIntExpGarbage() throws Exception {
         String input = "1ea";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberInvalidUnicodeExp() throws Exception {
         String input = "1e�";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberRealNoFraction() throws Exception {
         String input = "1.";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberDot123() throws Exception {
         String input = ".123";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberAlpha() throws Exception {
         String input = "1.2a-3";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberAlphaChar() throws Exception {
         String input = "1.8011670033376514H-308";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberLeadingZero() throws Exception {
         String input = "012";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberEmpty() throws Exception {
         String input = "";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void NumberTrailingGarbage() throws Exception {
         String input = "2@";
-        parse(input);
+        getParser(input).parse();
     }
 }

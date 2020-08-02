@@ -191,252 +191,252 @@ public class ObjectTests extends BaseTestClass {
     @Test(expected = ParserException.class)
     public void ObjectBadValue() throws Exception {
         String input = "[\"x\", truth]";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectBracketKey() throws Exception {
         String input = "{[: \"x\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectCommaNotColon() throws Exception {
         String input = "{\"x\", null}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectDoubleColon() throws Exception {
         String input = "{\"x\"::\"b\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectEmoji() throws Exception {
         String input = "{\uD83C\uDDE8\uD83C\uDDED}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectGarbageAtEnd() throws Exception {
         String input = "{\"a\":\"a\" 123}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectSingleQuotes() throws Exception {
         String input = "{key: 'value'";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectLoneContinuationByteKeyTrailingComma() throws Exception {
         String input = "{\"�\":\"0\",}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectMissingColon() throws Exception {
         String input = "{\"a\" b}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectMissingKey() throws Exception {
         String input = "{:\"b\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectMissingValue() throws Exception {
         String input = "{\"a\":";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectNoColonAndValue() throws Exception {
         String input = "{\"a\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectNonStringKey() throws Exception {
         String input = "{1:1}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectHugeIntKey() throws Exception {
         String input = "{9999E9999:1}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectRepeatedNull() throws Exception {
         String input = "{null:null,null:null}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingCommas() throws Exception {
         String input = "{\"id\":0,,,,,}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectSingleQuote() throws Exception {
         String input = "{'a':0}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingComma() throws Exception {
         String input = "{\"id\":0,}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingComment() throws Exception {
         String input = "{\"a\":\"b\"}/**/";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingCommentOpen() throws Exception {
         String input = "{\"a\":\"b\"}/**//";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingCommentSlashOpen() throws Exception {
         String input = "{\"a\":\"b\"}//";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingCommentSlashOpenIncomplete() throws Exception {
         String input = "{\"a\":\"b\"}/";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectDoubleComma() throws Exception {
         String input = "{\"a\":\"b\",,\"c\":\"d\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectNoQuotesKey() throws Exception {
         String input = "{a: \"b\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectUnterminatedValue() throws Exception {
         String input = "{\"a\":\"a";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectSingleString() throws Exception {
         String input = "{ \"foo\" : \"bar\", \"a\" }";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingGarbage() throws Exception {
         String input = "{\"a\":\"b\"}#";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectCommaNotClosingBrace() throws Exception {
         String input = "{\"x\": true,";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectExtraClosing() throws Exception {
         String input = "{}}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectNoValNoClose() throws Exception {
         String input = "{\"\":";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectComment() throws Exception {
         String input = "{\"a\":/*comment*/\"b\"}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingString() throws Exception {
         String input = "{\"a\": true} \"x\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpen() throws Exception {
         String input = "{";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenArrayClose() throws Exception {
         String input = "{]";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenComma() throws Exception {
         String input = "{,";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenArrayOpen() throws Exception {
         String input = "{[";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenString() throws Exception {
         String input = "{\"a";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenStringApostrophes() throws Exception {
         String input = "{'a'";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectOpenOpen() throws Exception {
         String input = "[\"\\{[\"\\{[\"\\{[\"\\{";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectTrailingHashtag() throws Exception {
         String input = "{\"a\":\"b\"}#{}";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectUnescapedLF() throws Exception {
         String input = "\\u000A\"\"";
-        parse(input);
+        getParser(input).parse();
     }
 
     @Test(expected = ParserException.class)
     public void ObjectUnclosedObj() throws Exception {
         String input = "{\"asd\":\"asd\"";
-        parse(input);
+        getParser(input).parse();
     }
 }
